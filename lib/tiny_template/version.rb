@@ -1,3 +1,3 @@
-module TinyTemplate
+class TinyTemplate
   VERSION = "0.0.1"
 end
