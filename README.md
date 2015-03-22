@@ -1,6 +1,6 @@
 # TinyTemplate
 
-TODO: Write a gem description
+This is a very simple template engine that allows you to interpolate method chains without passing it any data. TinyTemplate will use the `self` of the caller when no context is passed.
 
 ## Installation
 
@@ -20,7 +20,39 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+You just have to prepend your strings with the ~ operator to parse them with the methods of the current self :
+
+```ruby
+class Greeting
+  def hello
+    ~"Hello {{client.name.upcase}} and welcome to {{configuration.title.capitalize}}.
+      Your email is {{client.email.downcase.strip}}."
+  end
+
+  def client
+    OpenStruct.new(name: 'John Doe', email: 'John@doe.com')
+  end
+
+  def configuration
+    OpenStruct.new(title: 'my fancy website')
+  end
+end
+
+Greeting.new.hello
+
+# => "Hello JOHN DOE and welcome to My fancy website. Your email is john@doe.com."
+```
+
+
+
+If you don't like the binding magic used here, you can use TinyTemplate with the classic syntax :
+
+```ruby
+template = "Hello {{client.name.upcase}} and welcome to {{configuration.title.capitalize}}.
+            Your email is {{client.email.downcase.strip}}."
+
+TinyTemplate.parse(template, self)
+````
 
 ## Contributing
 
