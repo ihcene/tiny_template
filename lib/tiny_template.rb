@@ -22,14 +22,31 @@ class TinyTemplate
     new(str).parse(context)
   end
 
+  def self.secure(allowed_keys, &block)
+    previous_keys = @allowed_keys
+    @allowed_keys = allowed_keys
+    yield.tap do
+      @allowed_keys = previous_keys
+    end
+  end
+
+  def self.allowed_keys
+    @allowed_keys
+  end
+
   private
     attr_accessor :str
 
     # Private method used to interpolate one single expression at a time
     def interpolate(match, context)
-      match.gsub(/\{|\}/, '')
-           .split('.')
-           .inject(context){ |result, e| result.public_send(e) }
+      cleaned = match.gsub(/\{|\}/, '')
+
+      if !self.class.allowed_keys || self.class.allowed_keys.include?(cleaned)
+        cleaned.split('.')
+               .inject(context){ |result, e| result.public_send(e) }
+      else
+        ""
+      end
 
     rescue
       match
