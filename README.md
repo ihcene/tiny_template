@@ -54,6 +54,15 @@ template = "Hello {{client.name.upcase}} and welcome to {{configuration.title.ca
 TinyTemplate.parse(template, self)
 ````
 
+If your interpreted string comes from a non-trusted source (user inpur for instance), you can secure it by providing a white list of method chains.
+
+```ruby
+TinyTemplate.secure(['client.name', 'configuration.email']) do
+  ~my\_template
+  TinyTemplate.parse(my\_template)
+end
+````
+
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/tiny_template/fork )
