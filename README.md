@@ -58,8 +58,8 @@ If your interpreted string comes from a non-trusted source (user inpur for insta
 
 ```ruby
 TinyTemplate.secure(['client.name', 'configuration.email']) do
-  ~my\_template
-  TinyTemplate.parse(my\_template)
+  ~my_template
+  TinyTemplate.parse(my_template)
 end
 ````
 
